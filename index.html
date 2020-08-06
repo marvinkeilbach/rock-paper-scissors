@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        let startGame = prompt("Do you want to play?");
+        if ((startGame).toLowerCase().trim() === "yes") {
+            startGame = "";
+            game();
+        }
+
+        function computerPlay() {
+            let randomChoice = Math.floor(Math.random() * 3);
+            if (randomChoice === 0) {
+                return "Rock";
+            } else if (randomChoice === 1) {
+                return "Paper";
+            } else {
+                return "Scissors";
+            }
+        }
+
+        function playOneRound(playerSelection, computerSelection) {
+            let player = playerSelection.toLowerCase();
+            player = player.charAt(0).toUpperCase() + player.slice(1);
+            let computer = computerSelection;
+            if (player === computer) {
+                return ("Nobody wins. You both picked " + player + ".");
+            } else if ((player === "Rock" && computer === "Scissors") || 
+                       (player === "Paper" && computer === "Rock") || 
+                       (player === "Scissors" && computer === "Paper")){
+                           return "You win, computer loses! " + player + " beats " + computer + ".";
+            } else {
+                return "Computer wins, you lose! " + computer + " beats " + player + ".";
+            }
+        }
+
+        function promptSelection() {
+            let decision = prompt("Rock, Paper, or Scissors?", "");
+            decision = decision.toLowerCase().trim();
+            return decision;
+        }
+
+        function game() {
+            let computerScore = 0;
+            let playerScore = 0;
+            let decision;
+            let check;
+            let playerSelection;
+            let computerSelection;
+            alert("Let us begin!");
+
+            for (i = 0; i < 5; i++) {
+                alert("Round " + (i+1) + " out of 5. Ready?");
+                check = undefined;
+                decision = undefined;
+                while (typeof(check) === "undefined") {
+                    decision = promptSelection();
+                    if (decision === "rock" || decision === "paper" || decision === "scissors") {
+                        playerSelection = decision;
+                        check = 1;
+                    } else {
+                        alert("Please choose a valid name. Look out for misspellings.");
+                    }
+                }
+
+                computerSelection = computerPlay();
+                playerSelection = (playerSelection).charAt(0).toUpperCase() + (playerSelection).slice(1);
+
+
+                if (playerSelection === computerSelection) {
+                    playerScore++;
+                    computerScore++;
+                } else if (playerSelection === "Rock" && computerSelection === "Scissors" || 
+                       playerSelection === "Paper" && computerSelection === "Rock" || 
+                       playerSelection === "Scissors" && computerSelection === "Paper") {
+                        playerScore++;
+                } else {
+                        computerScore++;
+                }   
+                alert(playOneRound(playerSelection, computerSelection) + "\r\n" 
+                                + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
+            }
+
+            if (playerScore === computerScore) {
+                alert("Draw! You and computer picked the same choice 5 times in a row! End result: \r\n" 
+                    + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
+            } else if (playerScore > computerScore) {
+                alert("Congrats, you beat the computer! End result: \r\n" 
+                    + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
+            } else {
+                alert("The computer beat you... It's too clever! End result: \r\n" 
+                    + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
+            }
+
+            let newGame;
+            while (typeof(newGame) === "undefined") {
+                newGame = prompt("Do you want to play another round?", "");
+                newGame = newGame.toLowerCase().trim();
+                if (newGame === "yes") {
+                    game();
+                } else if (newGame !== "no") {
+                    newGame = undefined;
+                    alert("Please choose 'yes' or 'no'");
+                } else {
+                    alert("Alrighty mate, see you later!");
+                }
+            }
+        }
+
+
+    </script>
+</body>
+</html>
