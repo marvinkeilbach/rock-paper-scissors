@@ -1,0 +1,55 @@
+html, body {
+    height: 100%;
+    font-family: 'Libre Franklin';
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.btn {
+    background-color: pink;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 36px;
+    padding: 20px 40px;
+    margin: 0 15px 0 15px;
+    font-weight: 600;
+}
+
+.display {
+    margin-top: 30px;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+}
+
+.btn:focus {
+    background-color: #61a2c2;
+}
+
+.count {
+    margin: 0 0 15px 0;
+}
+
+.count1 {
+    font-size: 20px;
+}
+
+.lost {
+    color: #a70d2b;
+    font-weight: 600;
+}
+
+.won {
+    color: #14a21e;
+    font-weight: 600;
+}
+
+.draw {
+    color: #66339c;
+    font-weight: 600;
+}
