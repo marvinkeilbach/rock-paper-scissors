@@ -4,114 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@200;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+    <div class="container">
+        <div class="count count1"></div>
+        <div class="count count2"></div>
+        <div class="buttons">
+            <button class="btn rock">Rock</button>
+            <button class="btn paper">Paper</button>
+            <button class="btn scissors">Scissors</button>
+        </div>
+        <div class="display"></div>
+    </div>
     <script>
-        let startGame = prompt("Do you want to play?");
-        if ((startGame).toLowerCase().trim() === "yes") {
-            startGame = "";
-            game();
+        const button = document.querySelectorAll('.btn');
+        const display = document.querySelector('.display');
+        const count1 = document.querySelector('.count1');
+        const count2 = document.querySelector('.count2');
+
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function updateCount() {
+            count1.textContent = `You: ${playerScore}`;
+            count2.textContent = `Computer: ${computerScore}`;
+        }
+
+        function resetScore() {
+            playerScore = 0;
+            computerScore = 0;
         }
 
         function computerPlay() {
             let randomChoice = Math.floor(Math.random() * 3);
             if (randomChoice === 0) {
-                return "Rock";
+                return "rock";
             } else if (randomChoice === 1) {
-                return "Paper";
+                return "paper";
             } else {
-                return "Scissors";
+                return "scissors";
             }
         }
 
         function playOneRound(playerSelection, computerSelection) {
-            let player = playerSelection.toLowerCase();
-            player = player.charAt(0).toUpperCase() + player.slice(1);
+            count1.classList.remove('draw', 'won', 'lost');
+            let player = playerSelection;
             let computer = computerSelection;
+
             if (player === computer) {
-                return ("Nobody wins. You both picked " + player + ".");
-            } else if ((player === "Rock" && computer === "Scissors") || 
-                       (player === "Paper" && computer === "Rock") || 
-                       (player === "Scissors" && computer === "Paper")){
-                           return "You win, computer loses! " + player + " beats " + computer + ".";
-            } else {
-                return "Computer wins, you lose! " + computer + " beats " + player + ".";
-            }
-        }
-
-        function promptSelection() {
-            let decision = prompt("Rock, Paper, or Scissors?", "");
-            decision = decision.toLowerCase().trim();
-            return decision;
-        }
-
-        function game() {
-            let computerScore = 0;
-            let playerScore = 0;
-            let decision;
-            let check;
-            let playerSelection;
-            let computerSelection;
-            alert("Let us begin!");
-
-            for (i = 0; i < 5; i++) {
-                alert("Round " + (i+1) + " out of 5. Ready?");
-                check = undefined;
-                decision = undefined;
-                while (typeof(check) === "undefined") {
-                    decision = promptSelection();
-                    if (decision === "rock" || decision === "paper" || decision === "scissors") {
-                        playerSelection = decision;
-                        check = 1;
-                    } else {
-                        alert("Please choose a valid name. Look out for misspellings.");
-                    }
-                }
-
-                computerSelection = computerPlay();
-                playerSelection = (playerSelection).charAt(0).toUpperCase() + (playerSelection).slice(1);
-
-
-                if (playerSelection === computerSelection) {
-                    playerScore++;
-                    computerScore++;
-                } else if (playerSelection === "Rock" && computerSelection === "Scissors" || 
-                       playerSelection === "Paper" && computerSelection === "Rock" || 
-                       playerSelection === "Scissors" && computerSelection === "Paper") {
+                display.textContent = "Nobody wins. You both picked " + player + ".";
+            } else if ((player === "rock" && computer === "scissors") || 
+                       (player === "paper" && computer === "rock") || 
+                       (player === "scissors" && computer === "paper")){
+                        display.textContent = "You win, computer loses! " + (player.charAt(0).toUpperCase() + player.slice(1)) + " beats " + computer + ".";
                         playerScore++;
-                } else {
-                        computerScore++;
-                }   
-                alert(playOneRound(playerSelection, computerSelection) + "\r\n" 
-                                + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
-            }
-
-            if (playerScore === computerScore) {
-                alert("Draw! You and computer picked the same choice 5 times in a row! End result: \r\n" 
-                    + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
-            } else if (playerScore > computerScore) {
-                alert("Congrats, you beat the computer! End result: \r\n" 
-                    + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
             } else {
-                alert("The computer beat you... It's too clever! End result: \r\n" 
-                    + "Your score: " + playerScore + "\r\n" + "Computer's score: " + computerScore);
+                display.textContent = "Computer wins, you lose! " + (computer.charAt(0).toUpperCase() + computer.slice(1)) + " beats " + player + ".";
+                computerScore++;
             }
 
-            let newGame;
-            while (typeof(newGame) === "undefined") {
-                newGame = prompt("Do you want to play another round?", "");
-                newGame = newGame.toLowerCase().trim();
-                if (newGame === "yes") {
-                    game();
-                } else if (newGame !== "no") {
-                    newGame = undefined;
-                    alert("Please choose 'yes' or 'no'");
-                } else {
-                    alert("Alrighty mate, see you later!");
-                }
+            if (playerScore === 5 && computerScore === 5) {
+                count1.textContent = 'Draw! You both reached 5 points.';
+                count2.textContent = `End score: You: ${playerScore} Comupter: ${computerScore}`;
+                count1.classList.add('draw');
+                resetScore();
+            } else if (playerScore === 5 && computerScore < 5) {
+                count1.textContent = 'Congratulations, you won!';
+                count2.textContent = `End score: You: ${playerScore} Comupter: ${computerScore}`;
+                count1.classList.add('won');
+                resetScore();
+            } else if (playerScore <5 && computerScore === 5) {
+                count1.textContent = 'The machine beat you!';
+                count2.textContent = `End score: You: ${playerScore} Comupter: ${computerScore}`;
+                count1.classList.add('lost');
+                resetScore();
+            } else {
+                updateCount();
             }
         }
+
+        updateCount();
+
+        button.forEach(button => 
+            button.addEventListener('click', e => {
+                playOneRound(button.textContent.toLowerCase(), computerPlay());
+            }));
+
+
+
 
 
     </script>
